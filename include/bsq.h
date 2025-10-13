@@ -6,7 +6,7 @@
 /*   By: buranli <buranli@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 02:59:43 by buranli           #+#    #+#             */
-/*   Updated: 2025/10/13 03:03:12 by buranli          ###   ########.fr       */
+/*   Updated: 2025/10/13 15:30:24 by buranli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ typedef struct s_map
 	char			empty;
 	char			obstacle;
 	char			full;
-	unsigned short	**matrix;
-	unsigned short	square_size;
+	short	**matrix;
+	short	square_size;
 	int				square_row;
 	int				square_col;
 }					t_map;
