@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_util.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: buranli <buranli@student.42istanbul.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/15 18:16:03 by buranli           #+#    #+#             */
+/*   Updated: 2025/10/15 18:17:29 by buranli          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/bsq.h"
 
 t_map	*ft_map_error(void)
@@ -6,18 +18,18 @@ t_map	*ft_map_error(void)
 	return (NULL);
 }
 
-void ft_memcpy(char *dest, const char *src, int num)
+void	ft_memcpy(char *dest, const char *src, int num)
 {
-    int i;
+	int	i;
 
-    if (!dest || !src)
-        return;
-    i = 0;
-    while (i < num)
-    {
-        dest[i] = src[i];
-        i++;
-    }
+	if (!dest || !src)
+		return ;
+	i = 0;
+	while (i < num)
+	{
+		dest[i] = src[i];
+		i++;
+	}
 }
 
 int	ft_atoi(char *str)
@@ -45,20 +57,20 @@ int	ft_atoi(char *str)
 
 void	ft_free_map(t_map *map)
 {
-    int i;
+	int	i;
 
-    if (!map)
-        return;
-    if (map->matrix)
-    {
-        i = 0;
-        while (i < map->rows)
-        {
-            if (map->matrix[i])
-                free(map->matrix[i]);
-            i++;
-        }
-        free(map->matrix);
-    }
-    free(map);
+	if (!map)
+		return ;
+	if (map->matrix)
+	{
+		i = 0;
+		while (i < map->rows)
+		{
+			if (map->matrix[i])
+				free(map->matrix[i]);
+			i++;
+		}
+		free(map->matrix);
+	}
+	free(map);
 }

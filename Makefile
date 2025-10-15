@@ -7,6 +7,8 @@ SRCS := \
 	$(SRC_DIR)/ft_create_map.c \
 	$(SRC_DIR)/ft_get_matrix.c \
 	$(SRC_DIR)/ft_process_map.c \
+	$(SRC_DIR)/ft_map_utils.c \
+	$(SRC_DIR)/ft_process_utils.c \
 	$(SRC_DIR)/ft_util.c
 
 OBJS := $(SRCS:.c=.o)
