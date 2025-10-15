@@ -6,11 +6,14 @@
 /*   By: buranli <buranli@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 18:19:09 by buranli           #+#    #+#             */
-/*   Updated: 2025/10/15 19:42:29 by buranli          ###   ########.fr       */
+/*   Updated: 2025/10/15 20:17:54 by buranli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/bsq.h"
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 1024
+#endif
 
 int	ft_get_rows(char *file_content, int *read_count)
 {
@@ -58,31 +61,42 @@ int	ft_header_map(t_map *map, char *file_content)
 	return (i + 4);
 }
 
+static char	*ft_join_and_free(char *s1, char *s2, int bytes)
+{
+	char	*new;
+	int		len;
+
+	len = 0;
+	if (s1)
+		while (s1[len])
+			len++;
+	new = (char *)malloc(len + bytes + 1);
+	if (!new)
+		return (NULL);
+	if (s1)
+	{
+		ft_memcpy(new, s1, len);
+		free(s1);
+	}
+	ft_memcpy(new + len, s2, bytes);
+	new[len + bytes] = '\0';
+	return (new);
+}
+
 char	*ft_get_file(int fd)
 {
+	char	buffer[BUFFER_SIZE];
 	char	*file_content;
-	char	*temp;
-	char	buffer[1];
-	int		size;
-	int		byte;
+	int		bytes;
 
-	size = 0;
 	file_content = NULL;
-	byte = read(fd, buffer, 1);
-	while (byte > 0)
+	bytes = read(fd, buffer, BUFFER_SIZE);
+	while (bytes > 0)
 	{
-		temp = (char *)malloc(size + byte + 1);
-		if (!temp)
+		file_content = ft_join_and_free(file_content, buffer, bytes);
+		if (!file_content)
 			return (NULL);
-		if (file_content)
-			ft_memcpy(temp, file_content, size);
-		temp[size] = buffer[0];
-		size++;
-		temp[size] = '\0';
-		if (file_content)
-			free(file_content);
-		file_content = temp;
-		byte = read(fd, buffer, 1);
+		bytes = read(fd, buffer, BUFFER_SIZE);
 	}
 	return (file_content);
 }
