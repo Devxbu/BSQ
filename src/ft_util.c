@@ -6,6 +6,32 @@ t_map	*ft_map_error(void)
 	return (NULL);
 }
 
+void	ft_memcpy(char *dest, char *src, int num)
+{
+	int	i;
+
+	i = 0;
+	if (src)
+	{
+		while (i < num)
+		{
+			dest[i] = src[i];
+			i++;
+        }
+		free(src);
+	}
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	while (*s1 == *s2 && *s1 && *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
+
 int	ft_atoi(char *str)
 {
 	int	sign;
