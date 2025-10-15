@@ -6,30 +6,18 @@ t_map	*ft_map_error(void)
 	return (NULL);
 }
 
-void	ft_memcpy(char *dest, char *src, int num)
+void ft_memcpy(char *dest, const char *src, int num)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	if (src)
-	{
-		while (i < num)
-		{
-			dest[i] = src[i];
-			i++;
-        }
-		free(src);
-	}
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	while (*s1 == *s2 && *s1 && *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
+    if (!dest || !src)
+        return;
+    i = 0;
+    while (i < num)
+    {
+        dest[i] = src[i];
+        i++;
+    }
 }
 
 int	ft_atoi(char *str)
@@ -53,4 +41,24 @@ int	ft_atoi(char *str)
 		str++;
 	}
 	return (sign * num);
+}
+
+void	ft_free_map(t_map *map)
+{
+    int i;
+
+    if (!map)
+        return;
+    if (map->matrix)
+    {
+        i = 0;
+        while (i < map->rows)
+        {
+            if (map->matrix[i])
+                free(map->matrix[i]);
+            i++;
+        }
+        free(map->matrix);
+    }
+    free(map);
 }

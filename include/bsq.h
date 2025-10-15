@@ -34,18 +34,15 @@ typedef struct s_map
 	int				square_col;
 }					t_map;
 
-void				*ft_memcpy(void *dest, void *src, size_t num);
-void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-int					ft_strcmp(char *s1, char *s2);
-int					ft_atoi(char *str);
-t_map				*ft_map_error(void);
-void				ft_free_map(t_map *map);
-void				ft_get_square(t_map *map);
-void				ft_process_map(t_map *map);
-int					ft_get_line(t_map *map, int i, int file_name);
-int					ft_get_first_line(t_map *map, int file_name);
-int					ft_get_matrix(t_map *map, int file_name);
-int					ft_map_header(t_map *map, int file_name);
-t_map				*ft_create_map(char *file_name);
+// Utils start
+void                ft_memcpy(char *dest, const char *src, int num);
+int                 ft_atoi(char *str);
+t_map               *ft_map_error(void);
+void                ft_free_map(t_map *map);
+// Utils end
+void                ft_process_map(t_map *map);
+int                 ft_get_matrix(t_map *map, char *file_content);
+int                 ft_header_map(t_map *map, char *file_content);
+t_map               *ft_create_map(char *file_name);
 
 #endif

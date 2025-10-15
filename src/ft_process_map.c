@@ -1,42 +1,124 @@
 #include "../include/bsq.h"
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 
-int main(int argc, char **argv)
+void ft_print_map(t_map *map)
 {
-    int file;
-    char buffer[1];
-    char *file_content = NULL;
-    int bytes_read;
-    int total_size = 0;
+	int i;
+    int j;
+    i = 0;
+	while (i < map->rows)
+	{
+		j = 0;
+		while (j < map->cols)
+		{
+			char c;
+			if (map->matrix[i][j] == 0)
+				c = map->obstacle;
+			else if (map->matrix[i][j] == -1)
+				c = map->full;
+			else
+				c = map->empty;
+			write(1, &c, 1);
+			j++;
+		}
+		write(1, "\n", 1);
+		i++;
+	}
+}
 
-    file = open(argv[1], O_RDONLY);
+void ft_update_map(t_map *map)
+{
+    int i;
+    int j;
 
-    while ((bytes_read = read(file, buffer, 1)) > 0)
+    if (map->square_size > 0)
+	{
+		int start_row = map->square_row - map->square_size + 1;
+		int start_col = map->square_col - map->square_size + 1;
+
+		i = start_row;
+		while (i <= map->square_row)
+		{
+			j = start_col;
+			while (j <= map->square_col)
+			{
+				map->matrix[i][j] = -1;
+				j++;
+			}
+			i++;
+		}
+	}
+}
+
+int ft_dp(t_map *map)
+{
+    int i;
+    int j;
+	int max = 0;
+	map->square_size = 0; // Initialize
+
+    // consider first row
+    i = 0;
+    j = 0;
+    while (j < map->cols)
     {
-        char *temp = malloc(total_size + bytes_read + 1);
-        if (!temp)
-            return (1);
-        // eski veriyi kopyala
-        if (file_content)
+        if (map->matrix[0][j] > max)
         {
-            for (int i = 0; i < total_size; i++)
-                temp[i] = file_content[i];
-            free(file_content);
+            max = map->matrix[0][j];
+            map->square_row = 0;
+            map->square_col = j;
+            map->square_size = max;
         }
-        // yeni karakteri ekle
-        temp[total_size] = buffer[0];
-        total_size += bytes_read;
-        temp[total_size] = '\0';
-        file_content = temp;
+        j++;
+    }
+    // consider first column
+    i = 0;
+    while (i < map->rows)
+    {
+        if (map->matrix[i][0] > max)
+        {
+            max = map->matrix[i][0];
+            map->square_row = i;
+            map->square_col = 0;
+            map->square_size = max;
+        }
+        i++;
     }
 
-    if (file_content)
-        printf("%s\n", file_content);
+	i = 1;
+	while (i < map->rows)
+	{
+		j = 1;
+		while (j < map->cols)
+		{
+			if (map->matrix[i][j] != 0)
+			{
+				int top = map->matrix[i - 1][j];
+				int left = map->matrix[i][j - 1];
+				int diag = map->matrix[i - 1][j - 1];
+				int min = top;
+				if (left < min)
+					min = left;
+				if (diag < min)
+					min = diag;
+				map->matrix[i][j] = min + 1;
+			}
+			if (map->matrix[i][j] > max)
+			{
+				max = map->matrix[i][j];
+				map->square_row = i;
+				map->square_col = j;
+				map->square_size = max;
+			}
+			j++;
+		}
+		i++;
+	}
+    ft_update_map(map);
+    return (max);
+}
 
-    free(file_content);
-    close(file);
-    return (0);
+void ft_process_map(t_map *map)
+{
+	ft_dp(map);
+    ft_print_map(map);
 }
